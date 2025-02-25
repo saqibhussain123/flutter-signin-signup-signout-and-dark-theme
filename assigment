@@ -1,0 +1,402 @@
+// import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// // Theme Provider
+// class ThemeProvider with ChangeNotifier {
+//   ThemeMode themeMode = ThemeMode.system;
+
+//   bool get isDarkMode => themeMode == ThemeMode.dark;
+
+//   void toggleTheme(bool isDark) {
+//     themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+//     notifyListeners();
+//   }
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ChangeNotifierProvider(
+//       create: (context) => ThemeProvider(),
+//       child: Consumer<ThemeProvider>(
+//         builder: (context, themeProvider, child) {
+//           return MaterialApp(
+//             debugShowCheckedModeBanner: false,
+//             title: 'Flutter Authentication',
+//             themeMode: themeProvider.themeMode,
+//             theme: ThemeData.light(), // Light theme
+//             darkTheme: ThemeData.dark().copyWith(
+//               scaffoldBackgroundColor: Colors.black,
+//               appBarTheme: AppBarTheme(backgroundColor: Colors.grey[900]),
+//               elevatedButtonTheme: ElevatedButtonThemeData(
+//                 style:
+//                     ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+//               ),
+//               textTheme: TextTheme(
+//                 bodyLarge: TextStyle(color: Colors.white),
+//                 bodyMedium: TextStyle(color: Colors.white),
+//               ),
+//             ),
+//             home: SignInPage(),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+// class SignInPage extends StatefulWidget {
+//   @override
+//   _SignInPageState createState() => _SignInPageState();
+// }
+
+// class _SignInPageState extends State<SignInPage> {
+//   final _formKey = GlobalKey<FormState>();
+//   final TextEditingController _emailController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
+
+//   void _signIn() {
+//     if (_formKey.currentState!.validate()) {
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) => ProfilePage(email: _emailController.text),
+//         ),
+//       );
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final themeProvider = Provider.of<ThemeProvider>(context);
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Sign In'),
+//         actions: [
+//           Switch(
+//             value: themeProvider.isDarkMode,
+//             onChanged: (value) => themeProvider.toggleTheme(value),
+//           ),
+//         ],
+//       ),
+//       body: Padding(
+//         padding: EdgeInsets.all(16.0),
+//         child: Form(
+//           key: _formKey,
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               TextFormField(
+//                 controller: _emailController,
+//                 decoration: InputDecoration(labelText: 'Email'),
+//                 keyboardType: TextInputType.emailAddress,
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty || !value.contains('@')) {
+//                     return 'Please enter a valid email';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               SizedBox(height: 10),
+//               TextFormField(
+//                 controller: _passwordController,
+//                 decoration: InputDecoration(labelText: 'Password'),
+//                 obscureText: true,
+//                 validator: (value) {
+//                   if (value == null || value.length < 6) {
+//                     return 'Password must be at least 6 characters';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               SizedBox(height: 20),
+//               ElevatedButton(
+//                 onPressed: _signIn,
+//                 child: Text('Sign In'),
+//               ),
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => SignUpPage()),
+//                   );
+//                 },
+//                 child: Text("Don't have an account? Sign Up"),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class SignUpPage extends StatefulWidget {
+//   @override
+//   _SignUpPageState createState() => _SignUpPageState();
+// }
+
+// class _SignUpPageState extends State<SignUpPage> {
+//   final _formKey = GlobalKey<FormState>();
+//   final TextEditingController _emailController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
+
+//   void _signUp() {
+//     if (_formKey.currentState!.validate()) {
+//       Navigator.pop(context);
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Sign Up')),
+//       body: Padding(
+//         padding: EdgeInsets.all(16.0),
+//         child: Form(
+//           key: _formKey,
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [
+//               TextFormField(
+//                 controller: _emailController,
+//                 decoration: InputDecoration(labelText: 'Email'),
+//                 keyboardType: TextInputType.emailAddress,
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty || !value.contains('@')) {
+//                     return 'Please enter a valid email';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               SizedBox(height: 10),
+//               TextFormField(
+//                 controller: _passwordController,
+//                 decoration: InputDecoration(labelText: 'Password'),
+//                 obscureText: true,
+//                 validator: (value) {
+//                   if (value == null || value.length < 6) {
+//                     return 'Password must be at least 6 characters';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               SizedBox(height: 20),
+//               ElevatedButton(
+//                 onPressed: _signUp,
+//                 child: Text('Sign Up'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class ProfilePage extends StatelessWidget {
+//   final String email;
+
+//   ProfilePage({required this.email});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final themeProvider = Provider.of<ThemeProvider>(context);
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Profile'),
+//         actions: [
+//           Switch(
+//             value: themeProvider.isDarkMode,
+//             onChanged: (value) => themeProvider.toggleTheme(value),
+//           ),
+//         ],
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             CircleAvatar(
+//               radius: 50,
+//               backgroundImage:
+//                   AssetImage('assets/profile.png'), // Add a profile image
+//             ),
+//             SizedBox(height: 20),
+//             Text('Welcome,', style: TextStyle(fontSize: 18)),
+//             Text(email,
+//                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+//             SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text('Sign Out'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Resizable Container',
+//       theme: ThemeData.dark(),
+//       home: DynamicContainerPage(),
+//     );
+//   }
+// }
+
+// class DynamicContainerPage extends StatefulWidget {
+//   @override
+//   _DynamicContainerPageState createState() => _DynamicContainerPageState();
+// }
+
+// class _DynamicContainerPageState extends State<DynamicContainerPage> {
+//   double _containerSize = 100.0; // Initial size
+//   double _marginValue = 10.0; // Initial margin
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double maxContainerSize =
+//         MediaQuery.of(context).size.width * 0.7; // Limit max size
+
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Resizable Container")),
+//       body: Center(
+//         // Ensures everything is centered properly
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Container(
+//               margin: EdgeInsets.all(_marginValue),
+//               width: _containerSize,
+//               height: _containerSize,
+//               decoration: BoxDecoration(
+//                 color: Colors.blue,
+//                 borderRadius: BorderRadius.circular(10),
+//               ),
+//             ),
+//             SizedBox(height: 20),
+
+//             // Slider to adjust container size
+//             Text("Adjust Size", style: TextStyle(fontSize: 18)),
+//             Slider(
+//               value: _containerSize,
+//               min: 50,
+//               max: maxContainerSize, // Prevent overflow
+//               divisions: 10,
+//               label: "${_containerSize.round()} px",
+//               onChanged: (value) {
+//                 setState(() {
+//                   _containerSize = value;
+//                 });
+//               },
+//             ),
+
+//             // Slider to adjust margin
+//             Text("Adjust Margin", style: TextStyle(fontSize: 18)),
+//             Slider(
+//               value: _marginValue,
+//               min: 0,
+//               max: 50, // Prevent overflow
+//               divisions: 10,
+//               label: "${_marginValue.round()} px",
+//               onChanged: (value) {
+//                 setState(() {
+//                   _marginValue = value;
+//                 });
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+import 'dart:io';
+
+void main() {
+  print("\n--- Enter Scientific Data ---\n");
+
+  // Function to read double input with validation
+  double readDouble(String prompt) {
+    while (true) {
+      stdout.write(prompt);
+      try {
+        return double.parse(stdin.readLineSync()!);
+      } catch (e) {
+        print("❌ Invalid input! Please enter a valid number.");
+      }
+    }
+  }
+
+  // Function to read int input with validation
+  int readInt(String prompt) {
+    while (true) {
+      stdout.write(prompt);
+      try {
+        return int.parse(stdin.readLineSync()!);
+      } catch (e) {
+        print("❌ Invalid input! Please enter a valid integer.");
+      }
+    }
+  }
+
+  // Function to read boolean input
+  bool readBool(String prompt) {
+    while (true) {
+      stdout.write(prompt);
+      String input = stdin.readLineSync()!.toLowerCase();
+      if (input == 'true' || input == 'yes') return true;
+      if (input == 'false' || input == 'no') return false;
+      print("❌ Invalid input! Please enter 'true' or 'false'.");
+    }
+  }
+
+  // Function to read string input
+  String readString(String prompt) {
+    stdout.write(prompt);
+    return stdin.readLineSync()!.trim();
+  }
+
+  // Collecting user input
+  double minTemperature = readDouble("Enter Minimum Temperature (°C): ");
+  double maxTemperature = readDouble("Enter Maximum Temperature (°C): ");
+  double avgTemperature = readDouble("Enter Average Temperature (°C): ");
+  int townPopulation = readInt("Enter Town Population: ");
+  int statePopulation = readInt("Enter State Population: ");
+  bool isMetropolis = readBool("Is the city a metropolis? (true/false): ");
+  double literacyRate = readDouble("Enter Average Literacy Rate (%): ");
+  String qualification =
+      readString("Enter Average Qualification (Graduate/Postgraduate/etc.): ");
+
+  // Displaying the collected data
+  print("\n-----------------------------------");
+  print("    🌍 Scientific Data Report    ");
+  print("-----------------------------------");
+  print("📌 Minimum Temperature  : ${minTemperature.toStringAsFixed(1)}°C");
+  print("📌 Maximum Temperature  : ${maxTemperature.toStringAsFixed(1)}°C");
+  print("📌 Average Temperature  : ${avgTemperature.toStringAsFixed(1)}°C");
+  print("📌 Town Population      : $townPopulation");
+  print("📌 State Population     : $statePopulation");
+  print("📌 Is Metropolis        : ${isMetropolis ? "Yes" : "No"}");
+  print("📌 Literacy Rate        : ${literacyRate.toStringAsFixed(2)}%");
+  print("📌 Average Qualification: $qualification");
+  print("-----------------------------------");
+}
